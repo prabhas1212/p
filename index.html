@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Prabhas Acharya | Cosmic Portfolio</title>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -28,6 +30,7 @@
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
             min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .particles {
@@ -207,6 +210,7 @@
             display: flex;
             align-items: center;
             position: relative;
+            padding-top: 80px;
         }
 
         .hero-content {
@@ -260,6 +264,7 @@
             border-radius: 8px;
             color: white;
             font-family: 'Poppins', sans-serif;
+            width: 100%;
         }
 
         .contact-form textarea {
@@ -293,6 +298,29 @@
             transform: translateY(-5px);
         }
 
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        .show-menu {
+            display: none;
+            flex-direction: column;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: var(--dark);
+            padding: 2rem;
+            text-align: center;
+            gap: 1.5rem;
+            z-index: 99;
+            backdrop-filter: blur(10px);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
@@ -308,7 +336,68 @@
             }
             
             nav ul {
-                gap: 1rem;
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+            
+            section {
+                padding: 4rem 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+                margin-top: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .glow-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .hero {
+                height: auto;
+                min-height: 100vh;
+            }
+        }
+
+        /* Touch device optimization */
+        @media (hover: none) {
+            .cursor, .cursor-follower {
+                display: none;
+            }
+            
+            button, a {
+                cursor: pointer;
+            }
+            
+            .project-card:hover {
+                transform: none;
+            }
+            
+            .glow-btn:hover {
+                transform: none;
+                box-shadow: none;
             }
         }
     </style>
@@ -320,13 +409,23 @@
     
     <nav>
         <div class="logo">Prabhas Acharya</div>
-        <ul>
+        <div class="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-links">
             <li><a href="#about">About</a></li>
             <li><a href="#skills">Skills</a></li>
             <li><a href="#projects">Projects</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
+
+    <div class="show-menu">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+    </div>
 
     <section class="hero container">
         <div class="hero-content" data-aos="zoom-in" data-aos-duration="1000">
@@ -408,11 +507,11 @@
     <section id="contact" class="container">
         <h2 class="gradient-text" data-aos="fade-right">Transmit Message</h2>
         <div class="card" data-aos="fade-up">
-            <form class="contact-form">
-                <input type="text" placeholder="Your Name" required />
-                <input type="email" placeholder="Your Email" required />
-                <input type="text" placeholder="Subject" />
-                <textarea placeholder="Your Message" required></textarea>
+            <form class="contact-form" action="https://formspree.io/f/xrbqqeaz" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required />
+                <input type="email" name="_replyto" placeholder="Your Email" required />
+                <input type="text" name="_subject" placeholder="Subject" />
+                <textarea name="message" placeholder="Your Message" required></textarea>
                 <button type="submit" class="glow-btn">Send Message</button>
             </form>
         </div>
@@ -429,7 +528,7 @@
                 <a href="#"><i class="fab fa-instagram"></i></a>
                 <a href="#"><i class="fab fa-dribbble"></i></a>
             </div>
-            <p>&copy; 2023 Prabhas Acharya. All rights reserved.</p>
+            <p>&copy; <span id="year"></span> Prabhas Acharya. All rights reserved.</p>
         </div>
     </footer>
 
@@ -482,43 +581,94 @@
         const cursor = document.querySelector('.cursor');
         const cursorFollower = document.querySelector('.cursor-follower');
         
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            
-            setTimeout(() => {
-                cursorFollower.style.left = e.clientX + 'px';
-                cursorFollower.style.top = e.clientY + 'px';
-            }, 100);
+        if (window.matchMedia("(hover: hover)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                
+                setTimeout(() => {
+                    cursorFollower.style.left = e.clientX + 'px';
+                    cursorFollower.style.top = e.clientY + 'px';
+                }, 100);
+            });
+
+            // Hover Effects
+            document.querySelectorAll('button, a, .project-card').forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    cursor.style.transform = 'scale(2)';
+                    cursorFollower.style.transform = 'scale(2)';
+                });
+                element.addEventListener('mouseleave', () => {
+                    cursor.style.transform = 'scale(1)';
+                    cursorFollower.style.transform = 'scale(1)';
+                });
+            });
+        } else {
+            cursor.style.display = 'none';
+            cursorFollower.style.display = 'none';
+        }
+
+        // Mobile Menu Toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const showMenu = document.querySelector('.show-menu');
+        
+        mobileMenu.addEventListener('click', () => {
+            showMenu.style.display = showMenu.style.display === 'flex' ? 'none' : 'flex';
         });
 
-        // Hover Effects
-        document.querySelectorAll('button, a, .project-card').forEach(element => {
-            element.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(2)';
-                cursorFollower.style.transform = 'scale(2)';
-            });
-            element.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
-                cursorFollower.style.transform = 'scale(1)';
-            });
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav') && !e.target.closest('.show-menu')) {
+                showMenu.style.display = 'none';
+            }
         });
 
         // Smooth scrolling for navigation
-        document.querySelectorAll('nav a').forEach(anchor => {
+        document.querySelectorAll('nav a, .show-menu a').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
+                showMenu.style.display = 'none';
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
                 });
             });
         });
 
-        // Form submission
-        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Form submission feedback
+        const form = document.querySelector('.contact-form');
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            alert('Message transmitted successfully! I will contact you soon.');
-            this.reset();
+            const formData = new FormData(this);
+            const submitBtn = this.querySelector('button[type="submit"]');
+            
+            try {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending...';
+                
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    alert('Message transmitted successfully! I will contact you soon.');
+                    this.reset();
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            } catch (error) {
+                alert('Oops! There was a problem sending your message. Please try again later.');
+                console.error(error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+            }
         });
     </script>
 </body>
