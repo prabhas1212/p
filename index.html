@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prabhas Acharya | Cosmic Portfolio</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #00f7ff;
+            --secondary: #ff00ea;
+            --bg: #0a0a1a;
+            --dark: #050510;
+            --light: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            top: 0;
+            left: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Animated Gradient Text */
+        .gradient-text {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% 200%;
+            animation: gradient 5s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Holographic Card Effect */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, var(--primary), var(--secondary));
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            transition: transform 0.3s, opacity 0.3s;
+            z-index: 999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 247, 255, 0.2);
+            border-radius: 50%;
+            pointer-events: none;
+            transition: transform 0.6s, opacity 0.3s;
+            z-index: 998;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Glowing Button */
+        .glow-btn {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: white;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            font-size: 1rem;
+            cursor: none;
+            margin-top: 2rem;
+        }
+
+        .glow-btn:hover {
+            background: var(--primary);
+            color: var(--dark);
+            box-shadow: 0 0 20px var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Project Hover Effect */
+        .project-card {
+            transition: 0.3s;
+            transform-style: preserve-3d;
+        }
+
+        .project-card:hover {
+            transform: rotateX(10deg) rotateY(10deg) scale(1.05);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 26, 0.7);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--light);
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        section h2 {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        /* Contact Form */
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .contact-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            background: var(--dark);
+            margin-top: 6rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            section h2 {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    <div id="particles-js" class="particles"></div>
+    
+    <nav>
+        <div class="logo">Prabhas Acharya</div>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero container">
+        <div class="hero-content" data-aos="zoom-in" data-aos-duration="1000">
+            <h1 class="gradient-text">Creating <span class="float">Digital</span> Experiences</h1>
+            <p>I design and develop immersive web experiences that push boundaries and captivate audiences.</p>
+            <button class="glow-btn">Explore My Universe</button>
+        </div>
+    </section>
+
+    <section id="about" class="container">
+        <div class="card" data-aos="fade-up">
+            <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">About Me</h2>
+            <p style="line-height: 1.6; margin-bottom: 1.5rem;">
+                🚀 Digital alchemist transforming ideas into immersive experiences. 
+                With 5+ years of cosmic journey across multiple dimensions of development, 
+                I create realities that exist beyond imagination.
+            </p>
+            <p style="line-height: 1.6;">
+                My mission is to blend cutting-edge technology with artistic vision to craft digital experiences that leave lasting impressions. When I'm not coding, you'll find me exploring new technologies or contributing to open-source projects.
+            </p>
+        </div>
+    </section>
+
+    <section id="skills" class="container">
+        <h2 class="gradient-text" data-aos="fade-right">Superpowers</h2>
+        <div class="skills-grid">
+            <div class="project-card card" data-aos="flip-left">
+                <h3>Web Sorcery</h3>
+                <div class="skill-bar" style="height: 10px; background: rgba(255,255,255,0.1); margin: 1rem 0;">
+                    <div style="width: 95%; height: 100%; background: var(--primary); transition: 1s;"></div>
+                </div>
+                <p>HTML5, CSS3, JavaScript, React, Vue, Angular</p>
+            </div>
+            
+            <div class="project-card card" data-aos="flip-left" data-aos-delay="100">
+                <h3>Design Wizardry</h3>
+                <div class="skill-bar" style="height: 10px; background: rgba(255,255,255,0.1); margin: 1rem 0;">
+                    <div style="width: 90%; height: 100%; background: var(--primary); transition: 1s;"></div>
+                </div>
+                <p>UI/UX Design, Figma, Adobe XD, Photoshop</p>
+            </div>
+            
+            <div class="project-card card" data-aos="flip-left" data-aos-delay="200">
+                <h3>Backend Magic</h3>
+                <div class="skill-bar" style="height: 10px; background: rgba(255,255,255,0.1); margin: 1rem 0;">
+                    <div style="width: 85%; height: 100%; background: var(--primary); transition: 1s;"></div>
+                </div>
+                <p>Node.js, Python, Django, MongoDB, Firebase</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="container">
+        <h2 class="gradient-text" data-aos="fade-right">Cosmic Creations</h2>
+        <div class="skills-grid">
+            <div class="project-card card" data-aos="zoom-in">
+                <h3>Nebula Dashboard</h3>
+                <p>An interactive analytics dashboard with real-time data visualization</p>
+                <div style="height: 200px; background: linear-gradient(45deg, #0f0c29, #302b63, #24243e); margin: 1rem 0; border-radius: 8px;"></div>
+                <button class="glow-btn" style="margin-top: 1rem; padding: 0.5rem 1rem;">View Project</button>
+            </div>
+            
+            <div class="project-card card" data-aos="zoom-in" data-aos-delay="100">
+                <h3>Quantum Portfolio</h3>
+                <p>A 3D portfolio website with WebGL and Three.js animations</p>
+                <div style="height: 200px; background: linear-gradient(45deg, #1a2980, #26d0ce); margin: 1rem 0; border-radius: 8px;"></div>
+                <button class="glow-btn" style="margin-top: 1rem; padding: 0.5rem 1rem;">View Project</button>
+            </div>
+            
+            <div class="project-card card" data-aos="zoom-in" data-aos-delay="200">
+                <h3>Galactic E-Commerce</h3>
+                <p>An immersive shopping experience with AR product previews</p>
+                <div style="height: 200px; background: linear-gradient(45deg, #4776E6, #8E54E9); margin: 1rem 0; border-radius: 8px;"></div>
+                <button class="glow-btn" style="margin-top: 1rem; padding: 0.5rem 1rem;">View Project</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="container">
+        <h2 class="gradient-text" data-aos="fade-right">Transmit Message</h2>
+        <div class="card" data-aos="fade-up">
+            <form class="contact-form">
+                <input type="text" placeholder="Your Name" required />
+                <input type="email" placeholder="Your Email" required />
+                <input type="text" placeholder="Subject" />
+                <textarea placeholder="Your Message" required></textarea>
+                <button type="submit" class="glow-btn">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <h3 class="gradient-text">Prabhas Acharya</h3>
+            <p>Creating digital experiences that transcend boundaries</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-dribbble"></i></a>
+            </div>
+            <p>&copy; 2023 Prabhas Acharya. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize Animations
+        AOS.init({
+            once: false,
+            mirror: true,
+            duration: 1000
+        });
+
+        // Initialize Particles
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80 },
+                color: { value: '#00f7ff' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5 },
+                size: { value: 3 },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#00f7ff',
+                    opacity: 0.3,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: true,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false,
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'repulse' },
+                    onclick: { enable: true, mode: 'push' },
+                    resize: true
+                }
+            }
+        });
+
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursorFollower.style.left = e.clientX + 'px';
+                cursorFollower.style.top = e.clientY + 'px';
+            }, 100);
+        });
+
+        // Hover Effects
+        document.querySelectorAll('button, a, .project-card').forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(2)';
+                cursorFollower.style.transform = 'scale(2)';
+            });
+            element.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursorFollower.style.transform = 'scale(1)';
+            });
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Form submission
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Message transmitted successfully! I will contact you soon.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
