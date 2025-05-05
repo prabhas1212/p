@@ -8,12 +8,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
+      - uses: actions/checkout@v4
       - name: Create config file
         run: |
-          echo "const API_KEY = '${{ secrets.API_KEY }}';" > config.js
-          
+          echo "const API_KEY = '${{ secrets.OPENROUTER_API_KEY }}';" > config.js
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
